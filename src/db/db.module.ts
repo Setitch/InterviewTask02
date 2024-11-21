@@ -5,6 +5,7 @@ import { Dialect } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { MigrationError, SequelizeStorage, Umzug } from 'umzug';
 import { HistoryEntity } from './entities/history.entity';
+import { HistoryDbService } from './services/history.db-service';
 import { MigrationModuleType, migrationsLanguageSpecificHelp } from './types/migration.types';
 
 const UmZugLogger: Logger & {
@@ -18,6 +19,7 @@ const MODELS = [
   HistoryEntity,
 ];
 const SERVICES: Provider[] = [
+  HistoryDbService,
 ];
 const VALUES: Provider[] = [
   {
@@ -60,6 +62,7 @@ const SEQUELIZE: Provider[] = [
         logging: process.env?.DB_LOGGING?.toLocaleLowerCase() === 'true',
         benchmark: process.env?.DB_BENCHMARK?.toLocaleLowerCase() === 'true',
       };
+      
       
       const sequelize = process.env.node_env === 'test' ? (new Sequelize(`sqlite:${ (process.env?.DB_TEST || 'memory')?.toLocaleLowerCase() === 'memory' ? ':memory:' : process.env.DB_TEST }`)) : new Sequelize(options);
       
