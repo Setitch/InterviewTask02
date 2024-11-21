@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Op } from 'sequelize';
-import { HistoryEntity } from '../entities/history.entity';
+import { BinanceAggregatedResponseType } from '../../binance/types/binance.type';
+import { HistoryEntity, HistoryEntityCreationAttributes } from '../entities/history.entity';
 
 @Injectable()
 export class HistoryDbService {
@@ -48,5 +49,10 @@ export class HistoryDbService {
         ],
       },
     });
+  }
+  
+  
+  async upsert(row: HistoryEntityCreationAttributes) {
+    await this.history.upsert(row);
   }
 }

@@ -1,7 +1,8 @@
-import { AllowNull, Column, DataType, Index, Model, Table } from 'sequelize-typescript';
+import { AllowNull, Column, DataType, Index, Model, PrimaryKey, Table } from 'sequelize-typescript';
 
 export interface HistoryEntityCreationAttributes {
   tradeId: number;
+  currency: string;
   price: string;
   quantity: string;
   firstTradeId: number;
@@ -12,7 +13,7 @@ export interface HistoryEntityCreationAttributes {
 }
 
 export interface HistoryEntityAttributes extends HistoryEntityCreationAttributes {
-  id: number;
+  id: never;
 }
 
 
@@ -22,9 +23,15 @@ export interface HistoryEntityAttributes extends HistoryEntityCreationAttributes
   paranoid: false,
 })
 export class HistoryEntity extends Model<HistoryEntityAttributes, HistoryEntityCreationAttributes> {
+  @PrimaryKey
   @AllowNull(false)
   @Column(DataType.INTEGER)
   tradeId: number;
+  
+  @Index
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  currency: string;
   
   @AllowNull(false)
   @Column(DataType.STRING)
